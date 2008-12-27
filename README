@@ -29,5 +29,10 @@ Produces the following html:
   </tr></tbody>
 </table>
 
+Install
+=======
+
+script/plugin install git://github.com/p8/table_builder.git
+
 
 Copyright (c) 2008 Petrik de Heus, released under the MIT license
