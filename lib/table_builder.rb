@@ -57,8 +57,17 @@ module TableHelper
     end
 
     def d(content, *args)
+      if block_given?
+        args.insert(0, content)
+      end
       options = options_from_hash(args)
-      content_tag(:td, content, options)
+      if block_given?
+        concat(tag(:td, options, true))
+        yield
+        concat('</td>')
+      else
+        content_tag(:td, content, options)
+      end        
     end
 
     private

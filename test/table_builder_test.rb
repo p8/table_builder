@@ -105,6 +105,24 @@ class TableBuilderTest < Test::Unit::TestCase
      assert_dom_equal expected, output_buffer
    end  
 
+   def test_table_for_td_with_block
+      table_for([@drummer1]) do |t|
+        t.body_r do |e|
+          t.d(:class => 'class') do
+            output_buffer.concat 'content'
+          end
+        end
+      end
+      expected = %(<table>) <<
+          %(<tbody>) <<
+            %(<tr>) <<
+              %(<td class="class">content</td>) <<
+            %(</tr>) <<
+          %(</tbody>) <<
+        %(</table>)
+      assert_dom_equal expected, output_buffer
+    end
+
 end
 
 class Drummer < Struct.new(:id, :name); end
