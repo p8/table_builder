@@ -1,7 +1,7 @@
 TableBuilder
 ============
 
-Builder for creating tables and calendars inspired by ActionView's FormBuilder.
+Rails builder for creating tables and calendars inspired by ActionView's FormBuilder.
 
 Examples
 =======
