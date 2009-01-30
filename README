@@ -46,6 +46,34 @@ All tags can have extra html options.
 </table>
 
 
+Calendar Table
+================
+
+calendar_for(objects, options)
+All objects get sorted per day of the month
+
+day(options)
+day yields the day and the objects that for that day.
+Which day that is, is decided by the calling the :day_method on the objects.
+
+Calendar Example
+================
+
+@tasks = Task.this_month
+
+<% calendar_for(@tasks) do |t| %>
+  <%= t.head('mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun') %>
+  <% t.day(:day_method => :calendar_date) do |day, tasks| %>
+    <small><%= day.day %></small><br />
+    <% tasks.each do |task| %>
+      <% if task.completed %>
+        <small><%= h(task.name) %></small>
+      <% else %>
+        <h2><%= h(task.name) %></h2>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
 
 
 Install
