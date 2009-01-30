@@ -1,49 +1,67 @@
 TableBuilder
 ============
 
-Builder for creating tables inspired by ActionView::Helpers::FormHelper::FormBuilder.
+Builder for creating tables and calendars inspired by ActionView's FormBuilder.
 
 Examples
 =======
 
-@front_men = [FrontMan.new(1, 'David St. Hubbins'), FrontMan.new(2, 'David Lee Roth')]
+table_for has methods for each tag used in a table (<table>, <thead> <tr>, <td>, etc.)
 
-<% table_for(@front_men) do |t| %>
-  <%= t.head('Id', 'Name') %>
-  <% t.body_r do |front_man| %>
-    <%= t.d(h(front_man.id)) %>
-    <%= t.d(h(front_man.name)) %>
+A basic example would look like this:
+
+  @front_men = [FrontMan.new(1, 'David St. Hubbins'), FrontMan.new(2, 'David Lee Roth')]
+
+  <% table_for(@front_men) do |t| %>
+    <%= t.head('Id', 'Name') %>
+    <% t.body do |front_man| %>
+      <% t.r do %>  
+        <%= t.d(h(front_man.id)) %>
+        <%= t.d(h(front_man.name)) %>
+      <% end %>    
+    <% end %>
   <% end %>
-<% end %>
 
-You can also pass blocks to the d method
+The body and r method can be combined for easier usage:
 
-<%= t.d(:class => 'name') do %>
-  <%= link_to(h(front_man.name), front_man_url) %>
-<% end %>
+  <%= t.head('Id', 'Name') %>
+    <% t.body_r do |front_man| %>
+      <%= t.d(h(front_man.id)) %>
+      <%= t.d(h(front_man.name)) %>
+    <% end %>
+  ...
+
+You can also pass blocks to the d method for more flexibility:
+
+  <%= t.d(:class => 'name') do %>
+      <%= link_to(h(front_man.name), front_man_url(front_man)) %>
+  <% end %>
 
 All tags can have extra html options.
 
-@drummers = [Drummer.new(1, 'John "Stumpy" Pepys'), Drummer.new(2, 'Eric "Stumpy Joe" Childs')]
+  @drummers = [Drummer.new(1, 'John "Stumpy" Pepys'), Drummer.new(2, 'Eric "Stumpy Joe" Childs')]
 
-<% table_for(@drummers, :html => { :id => 'spinal_tap', :class => 'drummers'}) do |t| %>
-  <% t.body_r do |e| %>
-    <%= t.d(h(e.id), :class => 'class') %>
-    <%= t.d(h(e.name)) %>
-  <% end %>
-<% end %> 
+  <% table_for(@drummers, :html => { :id => 'spinal_tap', :class => 'drummers'}) do |t| %>
+    <% t.body_r(:class => 'row') do |e| %>
+      <%= t.d(h(e.id), :class => 'class') %>
+      <%= t.d(h(e.name)) %>
+    <% end %>
+  <% end %> 
 
 ... which produces the following html:
 
-<table class="drummers" id="spinal_tap">
-  <tbody><tr>
-    <td class="class">1</td>
-    <td>John &quot;Stumpy&quot; Pepys</td>
-  </tr><tr>
-    <td class="class">2</td>
-    <td>Eric &quot;Stumpy Joe&quot; Childs</td>
-  </tr></tbody>
-</table>
+  <table class="drummers" id="spinal_tap">
+    <tbody>
+      <tr class="row">
+        <td class="class">1</td>
+        <td>John &quot;Stumpy&quot; Pepys</td>
+      </tr>
+      <tr class="row">
+        <td class="class">2</td>
+        <td>Eric &quot;Stumpy Joe&quot; Childs</td>
+      </tr>
+    </tbody>
+  </table>
 
 
 Calendar Table
@@ -56,24 +74,21 @@ day(options)
 day yields the day and the objects that for that day.
 Which day that is, is decided by the calling the :day_method on the objects.
 
-Calendar Example
-================
+  @tasks = Task.this_month
 
-@tasks = Task.this_month
-
-<% calendar_for(@tasks) do |t| %>
-  <%= t.head('mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun') %>
-  <% t.day(:day_method => :calendar_date) do |day, tasks| %>
-    <small><%= day.day %></small><br />
-    <% tasks.each do |task| %>
-      <% if task.completed %>
-        <small><%= h(task.name) %></small>
-      <% else %>
-        <h2><%= h(task.name) %></h2>
+  <% calendar_for(@tasks) do |t| %>
+    <%= t.head('mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun') %>
+    <% t.day(:day_method => :calendar_date) do |day, tasks| %>
+      <small><%= day.day %></small><br />
+      <% tasks.each do |task| %>
+        <% if task.completed %>
+          <small><%= h(task.name) %></small>
+        <% else %>
+          <h2><%= h(task.name) %></h2>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
-<% end %>
 
 
 Install
@@ -82,4 +97,4 @@ Install
 script/plugin install git://github.com/p8/table_builder.git
 
 
-Copyright (c) 2008 Petrik de Heus, released under the MIT license
+Copyright (c) 2009 Petrik de Heus, released under the MIT license
