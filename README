@@ -3,14 +3,23 @@ TableBuilder
 
 Builder for creating tables inspired by ActionView::Helpers::FormHelper::FormBuilder.
 
-Example
+Examples
 =======
 
-<% table_for([FrontMan.new(1, 'David St. Hubbins')]) do |t| %>
-  <%= t.head('Name') %>
-  <% t.body_r do |e| %>
-    <%= t.d(h(e.name)) %>
+@front_men = [FrontMan.new(1, 'David St. Hubbins'), FrontMan.new(2, 'David Lee Roth')]
+
+<% table_for(@front_men) do |t| %>
+  <%= t.head('Id', 'Name') %>
+  <% t.body_r do |front_man| %>
+    <%= t.d(h(front_man.id)) %>
+    <%= t.d(h(front_man.name)) %>
   <% end %>
+<% end %>
+
+You can also pass blocks to the d method
+
+<%= t.d(:class => 'name') do %>
+  <%= link_to(h(front_man.name), front_man_url) %>
 <% end %>
 
 All tags can have extra html options.
@@ -24,7 +33,7 @@ All tags can have extra html options.
   <% end %>
 <% end %> 
 
-Produces the following html:
+... which produces the following html:
 
 <table class="drummers" id="spinal_tap">
   <tbody><tr>
@@ -35,6 +44,9 @@ Produces the following html:
     <td>Eric &quot;Stumpy Joe&quot; Childs</td>
   </tr></tbody>
 </table>
+
+
+
 
 Install
 =======
