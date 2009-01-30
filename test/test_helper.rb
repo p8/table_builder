@@ -7,4 +7,4 @@ require 'action_controller'
 require 'action_view'
 require 'action_controller/test_process'
 
-require(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'table_builder.rb')))
+require(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'table_builder')))
