@@ -6,6 +6,13 @@ Builder for creating tables inspired by ActionView::Helpers::FormHelper::FormBui
 Example
 =======
 
+<% table_for([FrontMan.new(1, 'David St. Hubbins')]) do |t| %>
+  <%= t.head('Name') %>
+  <% t.body_r do |e| %>
+    <%= t.d(h(e.name)) %>
+  <% end %>
+<% end %>
+
 All tags can have extra html options.
 
 @drummers = [Drummer.new(1, 'John "Stumpy" Pepys'), Drummer.new(2, 'Eric "Stumpy Joe" Childs')]
