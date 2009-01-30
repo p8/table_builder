@@ -69,23 +69,30 @@ Calendar Table
 
 calendar_for(objects, options)
 All objects get sorted per day of the month
-
+Possible options:
+  :year
+  :month
+  :today (if other than Date.now)
+  
 day(options)
-day yields the day and the objects that for that day.
+day yields the day and the objects for that day.
 Which day that is, is decided by the calling the :day_method on the objects.
+Possible options:
+  :day_method
+
 
   @tasks = Task.this_month
 
   <% calendar_for(@tasks) do |t| %>
     <%= t.head('mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun') %>
     <% t.day(:day_method => :calendar_date) do |day, tasks| %>
-      <small><%= day.day %></small><br />
+      <%= day.day %>
       <% tasks.each do |task| %>
+        <%= h(task.name) %>
         <% if task.completed %>
-          <small><%= h(task.name) %></small>
-        <% else %>
-          <h2><%= h(task.name) %></h2>
+          (completed)
         <% end %>
+        <br />
       <% end %>
     <% end %>
   <% end %>
