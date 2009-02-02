@@ -27,9 +27,7 @@ A basic example would look like this:
 
 You can pass an array to the head method:
 
-  <% table_for(@front_men) do |t| %>
     <%= t.head('Id', 'Name') %>
-    <% t.body_r ...
 
 
 The body and r method can be combined for easier usage:
@@ -38,7 +36,6 @@ The body and r method can be combined for easier usage:
     <%= t.d(h(front_man.id)) %>
     <%= t.d(h(front_man.name)) %>
   <% end %>
-  ...
 
 You can also pass blocks to the d and h methods for more flexibility:
 
@@ -52,7 +49,7 @@ All tag methods are rails tag methods, so they can have extra html options.
 
   <% table_for(@drummers, :html => { :id => 'spinal_tap', :class => 'drummers'}) do |t| %>
     <% t.body_r(:class => 'row') do |e| %>
-      <%= t.d(h(e.id), :class => 'class') %>
+      <%= t.d(h(e.id), :title => 'id') %>
       <%= t.d(h(e.name)) %>
     <% end %>
   <% end %> 
@@ -62,11 +59,11 @@ All tag methods are rails tag methods, so they can have extra html options.
   <table class="drummers" id="spinal_tap">
     <tbody>
       <tr class="row">
-        <td class="class">1</td>
+        <td title="id">1</td>
         <td>John &quot;Stumpy&quot; Pepys</td>
       </tr>
       <tr class="row">
-        <td class="class">2</td>
+        <td title="id">2</td>
         <td>Eric &quot;Stumpy Joe&quot; Childs</td>
       </tr>
     </tbody>
