@@ -17,7 +17,7 @@ A basic example would look like this:
         <%= t.h('Name') %>
       <% end %>
     <% end %>
-    <% t.body_r do |front_man| %>
+    <% t.body do |front_man| %>
       <% t.r do %>
         <%= t.d(h(front_man.id)) %>
         <%= t.d(h(front_man.name)) %>
