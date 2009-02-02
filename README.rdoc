@@ -69,38 +69,44 @@ All tag methods are rails tag methods, so they can have extra html options.
     </tbody>
   </table>
 
+You can customize the table by creating your own TableBuilder:
+  
+  <% table_for(@drummers, :builder => PagedTableBuilder) do |t| %>
+
 
 == Calendar Table
 
-calendar_for(objects, options)
+calendar_for creates a table like table_for.
 All objects get sorted per day of the month
-Possible options:
-  :year
-  :month
-  :today (if other than Date.now)
 
-day(options)
-day yields the day and the objects for that day.
-Which day that is, is decided by the calling the :day_method on the objects.
-Possible options:
-  :day_method
-
+A basic example would look like this:
 
   @tasks = Task.this_month
 
   <% calendar_for(@tasks) do |t| %>
     <%= t.head('mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun') %>
-    <% t.day(:day_method => :calendar_date) do |day, tasks| %>
+    <% t.day do |day, tasks| %>
       <%= day.day %>
       <% tasks.each do |task| %>
         <%= h(task.name) %>
-        <% if task.completed %>
-          (completed)
-        <% end %>
-        <br />
       <% end %>
     <% end %>
   <% end %>
+
+To show a different month you can pass the :year and :month options:
+
+  <% calendar_for(@tasks, :year => 2009, :month => 1) do |t| %>
+
+To highlight a different day you can pass the :today option:
+
+  <% calendar_for(@tasks, :today => Date.civil(2008, 12, 26)) do |t| %>
+
+By default the :date method is called on the objects for sorting.
+
+To use another method you can pass the :day_method option:
+
+  <% t.day(:day_method => :calendar_date) do |day, tasks| %>
+
 
 
 == Install
