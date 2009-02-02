@@ -6,44 +6,54 @@ Builder for creating tables inspired by ActionView::Helpers::FormHelper::FormBui
 Examples
 =======
 
-@front_men = [FrontMan.new(1, 'David St. Hubbins'), FrontMan.new(2, 'David Lee Roth')]
+  @front_men = [FrontMan.new(1, 'David St. Hubbins'), FrontMan.new(2, 'David Lee Roth')]
 
-<% table_for(@front_men) do |t| %>
-  <%= t.head('Id', 'Name') %>
-  <% t.body_r do |front_man| %>
-    <%= t.d(h(front_man.id)) %>
-    <%= t.d(h(front_man.name)) %>
+  <% table_for(@front_men) do |t| %>
+    <% t.head_r do %>
+      <%= t.h('Id') %>
+      <%= t.h('Name') %>    
+    <% end %>  
+    <% t.body_r do |front_man| %>
+      <%= t.d(h(front_man.id)) %>
+      <%= t.d(h(front_man.name)) %>
+    <% end %>
   <% end %>
-<% end %>
 
-You can also pass blocks to the d method
+You can pass an array to the head method:
 
-<%= t.d(:class => 'name') do %>
-  <%= link_to(h(front_man.name), front_man_url) %>
-<% end %>
+  <% table_for(@front_men) do |t| %>
+    <%= t.head('Id', 'Name') %>
+    <% t.body_r ...
+
+
+You can pass blocks to the d and h methods:
+
+  <%= t.d(:class => 'name') do %>
+    <%= link_to(h(front_man.name), front_man_url) %>
+  <% end %>
 
 All tags can have extra html options.
 
-@drummers = [Drummer.new(1, 'John "Stumpy" Pepys'), Drummer.new(2, 'Eric "Stumpy Joe" Childs')]
+  @drummers = [Drummer.new(1, 'John "Stumpy" Pepys'), Drummer.new(2, 'Eric "Stumpy Joe" Childs')]
 
-<% table_for(@drummers, :html => { :id => 'spinal_tap', :class => 'drummers'}) do |t| %>
-  <% t.body_r do |e| %>
-    <%= t.d(h(e.id), :class => 'class') %>
-    <%= t.d(h(e.name)) %>
-  <% end %>
-<% end %> 
+  <% table_for(@drummers, :html => { :id => 'spinal_tap', :class => 'drummers'}) do |t| %>
+    <% t.body_r do |e| %>
+      <%= t.d(h(e.id), :class => 'class') %>
+      <%= t.d(h(e.name)) %>
+    <% end %>
+  <% end %> 
 
 ... which produces the following html:
 
-<table class="drummers" id="spinal_tap">
-  <tbody><tr>
-    <td class="class">1</td>
-    <td>John &quot;Stumpy&quot; Pepys</td>
-  </tr><tr>
-    <td class="class">2</td>
-    <td>Eric &quot;Stumpy Joe&quot; Childs</td>
-  </tr></tbody>
-</table>
+  <table class="drummers" id="spinal_tap">
+    <tbody><tr>
+      <td class="class">1</td>
+      <td>John &quot;Stumpy&quot; Pepys</td>
+    </tr><tr>
+      <td class="class">2</td>
+      <td>Eric &quot;Stumpy Joe&quot; Childs</td>
+    </tr></tbody>
+  </table>
 
 
 
