@@ -11,13 +11,17 @@ A basic example would look like this:
   @front_men = [FrontMan.new(1, 'David St. Hubbins'), FrontMan.new(2, 'David Lee Roth')]
 
   <% table_for(@front_men) do |t| %>
-    <% t.head_r do %>
-      <%= t.h('Id') %>
-      <%= t.h('Name') %>    
-    <% end %>  
+    <% t.head do %>
+      <% t.r do %>
+        <%= t.h('Id') %>
+        <%= t.h('Name') %>
+      <% end %>
+    <% end %>
     <% t.body_r do |front_man| %>
-      <%= t.d(h(front_man.id)) %>
-      <%= t.d(h(front_man.name)) %>
+      <% t.r do %>
+        <%= t.d(h(front_man.id)) %>
+        <%= t.d(h(front_man.name)) %>
+      <% end %>
     <% end %>
   <% end %>
 
@@ -30,11 +34,10 @@ You can pass an array to the head method:
 
 The body and r method can be combined for easier usage:
 
-  <%= t.head('Id', 'Name') %>
-    <% t.body_r do |front_man| %>
-      <%= t.d(h(front_man.id)) %>
-      <%= t.d(h(front_man.name)) %>
-    <% end %>
+  <% t.body_r do |front_man| %>
+    <%= t.d(h(front_man.id)) %>
+    <%= t.d(h(front_man.name)) %>
+  <% end %>
   ...
 
 You can also pass blocks to the d and h methods for more flexibility:
