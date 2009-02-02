@@ -102,7 +102,6 @@ To highlight a different day you can pass the :today option:
   <% calendar_for(@tasks, :today => Date.civil(2008, 12, 26)) do |t| %>
 
 By default the :date method is called on the objects for sorting.
-
 To use another method you can pass the :day_method option:
 
   <% t.day(:day_method => :calendar_date) do |day, tasks| %>
