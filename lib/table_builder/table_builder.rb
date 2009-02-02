@@ -19,13 +19,29 @@ module TableHelper
       @objects, @template, @options = objects, template, options
     end
 
-    def head(*cols)
-      @num_of_columns = cols.size
-      content_tag(:thead,
-        content_tag(:tr,
-          cols.collect { |c| content_tag(:th, c)}.join('')
+    def head(*args)
+      if block_given?
+        concat(tag(:thead, options_from_hash(args), true))
+        yield
+        concat('</thead>')
+      else        
+        @num_of_columns = args.size
+        content_tag(:thead,
+          content_tag(:tr,
+            args.collect { |c| content_tag(:th, c)}.join('')
+          )
         )
-      )
+      end
+    end
+
+    def head_r(*args)
+      raise ArgumentError, "Missing block" unless block_given?
+      options = options_from_hash(args)
+      head do
+        concat(tag(:tr, options, true))
+        yield
+        concat('</tr>')
+      end
     end
 
     def body(*args)
@@ -36,7 +52,7 @@ module TableHelper
       end
     end
     
-    def body_r(*args, &proc)
+    def body_r(*args)
       raise ArgumentError, "Missing block" unless block_given?
       options = options_from_hash(args)
       tbody do
@@ -56,19 +72,28 @@ module TableHelper
       end
     end
 
-    def d(content, *args)
+    def h(*args)
       if block_given?
-        args.insert(0, content)
-      end
-      options = options_from_hash(args)
+        concat(tag(:th, options_from_hash(args), true))
+        yield
+        concat('</th>')
+      else
+        content = args.shift
+        content_tag(:th, content, options_from_hash(args))
+      end        
+    end
+
+    def d(*args)
       if block_given?
-        concat(tag(:td, options, true))
+        concat(tag(:td, options_from_hash(args), true))
         yield
         concat('</td>')
       else
-        content_tag(:td, content, options)
+        content = args.shift
+        content_tag(:td, content, options_from_hash(args))
       end        
     end
+    
 
     private
     
