@@ -112,5 +112,11 @@ To use another method you can pass the :day_method option:
 
 script/plugin install git://github.com/p8/table_builder.git
 
+If you get the following error:
+   ActionView::TemplateError (wrong number of arguments (1 for 2))
+
+You can try an older pre rails 2.2 table_builder:
+  cd vendor/plugins/table_builder/
+  git checkout pre-rails-2.2
 
 Copyright (c) 2008 Petrik de Heus, released under the MIT license
