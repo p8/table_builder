@@ -118,5 +118,9 @@ If you get the following error:
 You can try an older pre rails 2.2 table_builder:
   cd vendor/plugins/table_builder/
   git checkout pre-rails-2.2
+  
+== Contributors
+
+Thanks to Sean Dague.
 
 Copyright (c) 2008 Petrik de Heus, released under the MIT license
