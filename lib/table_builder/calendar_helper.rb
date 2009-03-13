@@ -45,6 +45,10 @@ module CalendarHelper
       options = {}
       if(day.strftime("%Y-%m-%d") ==  @today.strftime("%Y-%m-%d"))
         options[:class] = 'today'
+      elsif(day.month != @calendar.month)
+        options[:class] = 'notmonth'
+      elsif(day.wday == 0 or day.wday == 6)
+        options[:class] = 'weekend'
       end
       options
     end
@@ -52,7 +56,7 @@ module CalendarHelper
   end
 
   class Calendar
-    attr_accessor :first_weekday, :last_weekday
+    attr_accessor :first_weekday, :last_weekday, :month
     def initialize(options={})
       @year = options[:year] || Time.now.year
       @month = options[:month] || Time.now.month

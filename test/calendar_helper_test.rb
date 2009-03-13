@@ -36,11 +36,11 @@ class CalendarHelperTest < Test::Unit::TestCase
     end
     expected = %(<table>) <<
       %(<tbody>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
+        %(<tr><td class="notmonth"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td class="notmonth"></td><td class="notmonth"></td><td class="notmonth"></td></tr>) <<
         %(</tbody>) <<
       %(</table>)
     assert_dom_equal expected, self.output_buffer
@@ -55,11 +55,11 @@ class CalendarHelperTest < Test::Unit::TestCase
     end
     expected = %(<table>) <<
       %(<tbody>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td>34</td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
+        %(<tr><td class="notmonth"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend" ></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td></td><td>34</td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td class="notmonth"></td><td class="notmonth"></td><td class="notmonth"></td></tr>) <<
         %(</tbody>) <<
       %(</table>)
     assert_dom_equal expected, output_buffer
@@ -67,18 +67,18 @@ class CalendarHelperTest < Test::Unit::TestCase
   
   def test_calendar_for_sets_css_classes
     self.output_buffer = ''
-    calendar_for([], :year=> 2008, :month => 12, :today => Date.civil(2008, 12, 14)) do |c|
+    calendar_for([], :year=> 2008, :month => 12, :today => Date.civil(2008, 12, 15)) do |c|
       c.day do |day, events|
         output_buffer.concat(events.collect{|e| e.id}.join)
       end
     end
     expected = %(<table>) <<
       %(<tbody>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td class="today"></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
-        %(<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>) <<
+        %(<tr><td class="notmonth"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td class="today"></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
+        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td class="notmonth"></td><td class="notmonth"></td><td class="notmonth"></td></tr>) <<
         %(</tbody>) <<
       %(</table>)
     assert_dom_equal expected, self.output_buffer
