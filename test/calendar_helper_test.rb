@@ -50,16 +50,17 @@ class CalendarHelperTest < Test::Unit::TestCase
     self.output_buffer = ''
     calendar_for(@events, :year=> 2008, :month => 12) do |c|
       c.day do |day, events|
-        output_buffer.concat(events.collect{|e| e.id}.join)
+        content = events.collect{|e| e.id}.join
+        output_buffer.concat("(#{day.day})#{content}")
       end
     end
     expected = %(<table>) <<
       %(<tbody>) <<
-        %(<tr><td class="notmonth"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
-        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
-        %(<tr><td class="weekend" ></td><td></td><td></td><td></td><td></td><td></td><td class="weekend"></td></tr>) <<
-        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td></td><td>34</td><td class="weekend"></td></tr>) <<
-        %(<tr><td class="weekend"></td><td></td><td></td><td></td><td class="notmonth"></td><td class="notmonth"></td><td class="notmonth"></td></tr>) <<
+        %(<tr><td class="notmonth">(30)</td><td>(1)</td><td>(2)</td><td>(3)</td><td>(4)</td><td>(5)</td><td class="weekend">(6)</td></tr>) <<
+        %(<tr><td class="weekend">(7)</td><td>(8)</td><td>(9)</td><td>(10)</td><td>(11)</td><td>(12)</td><td class="weekend">(13)</td></tr>) <<
+        %(<tr><td class="weekend">(14)</td><td>(15)</td><td>(16)</td><td>(17)</td><td>(18)</td><td>(19)</td><td class="weekend">(20)</td></tr>) <<
+        %(<tr><td class="weekend">(21)</td><td>(22)</td><td>(23)</td><td>(24)</td><td>(25)</td><td>(26)34</td><td class="weekend">(27)</td></tr>) <<
+        %(<tr><td class="weekend">(28)</td><td>(29)</td><td>(30)</td><td>(31)</td><td class="notmonth">(1)</td><td class="notmonth">(2)</td><td class="notmonth">(3)</td></tr>) <<
         %(</tbody>) <<
       %(</table>)
     assert_dom_equal expected, output_buffer
@@ -114,6 +115,13 @@ class CalendarHelperTest < Test::Unit::TestCase
     assert_equal days, calendar.days
   end
 
+  def test_days_with_first_day_of_week_set
+    calendar = CalendarHelper::Calendar.new(:year=> 2008, :month => 12, :first_day_of_week => 1)
+    days = []
+    Date.civil(2008, 12, 1).upto(Date.civil(2009, 1, 4)){|day| days << day}
+    assert_equal days, calendar.days
+  end
+
   def test_first_day
     calendar = CalendarHelper::Calendar.new(:year=> 2008, :month => 12)
     assert_equal Date.civil(2008, 11, 30), calendar.first_day
@@ -122,6 +130,11 @@ class CalendarHelperTest < Test::Unit::TestCase
   def test_last_day
     calendar = CalendarHelper::Calendar.new(:year=> 2008, :month => 12)
     assert_equal Date.civil(2009, 1, 3), calendar.last_day
+  end
+  
+  def test_last_day_with_first_day_of_week_set
+    calendar = CalendarHelper::Calendar.new(:year=> 2008, :month => 12, :first_day_of_week => 1)
+    assert_equal Date.civil(2009, 1, 4), calendar.last_day
   end  
 end
 

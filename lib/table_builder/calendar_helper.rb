@@ -75,9 +75,9 @@ module CalendarHelper
 
     def last_day
       last = @last
-      while(last.wday % 7 < @last_weekday % 7)
+      while(last.wday % 7 != @last_weekday % 7)
         last = last.next
-      end
+      end   
       last
     end
     
