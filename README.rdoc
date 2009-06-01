@@ -106,6 +106,9 @@ To use another method you can pass the :day_method option:
 
   <% t.day(:day_method => :calendar_date) do |day, tasks| %>
 
+If you want to add id's to your td tag you can pass a pattern:
+
+  <% t.day(:id => 'day_%d') do |day, tasks| %>
 
 
 == Install
