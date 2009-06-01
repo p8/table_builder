@@ -3,6 +3,7 @@ require File.join(File.dirname(__FILE__), 'test_helper.rb')
 class CalendarHelperTest < Test::Unit::TestCase
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::TagHelper
+  include ActionController::TestCase::Assertions
   include CalendarHelper
   attr_accessor :output_buffer
 
