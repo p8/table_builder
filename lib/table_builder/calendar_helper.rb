@@ -6,9 +6,9 @@ module CalendarHelper
     html_options = options[:html]
     builder = options[:builder] || CalendarBuilder
     calendar = options[:calendar] || Calendar
-    concat(tag(:table, html_options, true))
-    yield builder.new(objects || [], self, calendar, options)
-    concat('</table>')
+    content_tag(:table, nil, html_options) do
+      yield builder.new(objects || [], self, calendar, options)
+    end
   end
 
   class CalendarBuilder < TableHelper::TableBuilder
