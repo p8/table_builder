@@ -64,8 +64,13 @@ module CalendarHelper
       @first_day_of_week = options[:first_day_of_week] || 0
       @first_weekday = first_day_of_week(@first_day_of_week)
       @last_weekday = last_day_of_week(@first_day_of_week)
-      @first = Date.civil(@year, @month, 1)
-      @last = Date.civil(@year, @month, -1)           
+      if options[:thirty_days_from_now]
+        @first = Date.today
+        @last = @first + 30
+      else
+        @first = Date.civil(@year, @month, 1)
+        @last = Date.civil(@year, @month, -1)           
+      end
     end
     
     def each_day
