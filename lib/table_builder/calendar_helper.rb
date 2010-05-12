@@ -44,16 +44,13 @@ module CalendarHelper
     
     def td_options(day, id_pattern)
       options = {}
-      if(day.strftime("%Y-%m-%d") ==  @today.strftime("%Y-%m-%d"))
-        options[:class] = 'today'
-      elsif(day.month != @calendar.month)
-        options[:class] = 'notmonth'
-      elsif(day.wday == 0 or day.wday == 6)
-        options[:class] = 'weekend'
-      end
-      if id_pattern
-        options[:id] = day.strftime(id_pattern)
-      end
+      css_classes = []
+      css_classes << 'today'    if day.strftime("%Y-%m-%d") ==  @today.strftime("%Y-%m-%d")
+      css_classes << 'notmonth' if day.month != @calendar.month
+      css_classes << 'weekend'  if day.wday == 0 or day.wday == 6
+      css_classes << 'future'   if day > @today.to_date
+      css_classes = day.strftime(id_pattern) if id_pattern
+      options[:class] = css_classes.join(' ') unless css_classes.empty?
       options
     end
 
