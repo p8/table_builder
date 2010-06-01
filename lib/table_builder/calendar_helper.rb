@@ -16,8 +16,8 @@ module CalendarHelper
       super(objects, template, options)
       @calendar = calendar.new(options)
       @today = options[:today] || Time.now
-    end    
-    
+    end
+
     def day(*args)
       raise ArgumentError, "Missing block" unless block_given?
       options = options_from_hash(args)
@@ -41,7 +41,7 @@ module CalendarHelper
     def objects_for_days
       @calendar.objects_for_days(@objects)
     end
-    
+
     def td_options(day, id_pattern)
       options = {}
       css_classes = []
@@ -69,10 +69,10 @@ module CalendarHelper
         @last = @first + 30
       else
         @first = Date.civil(@year, @month, 1)
-        @last = Date.civil(@year, @month, -1)           
+        @last = Date.civil(@year, @month, -1)
       end
     end
-    
+
     def each_day
       first_day.upto(last_day) do |day|
         yield(day)
@@ -83,18 +83,18 @@ module CalendarHelper
       last = @last
       while(last.wday % 7 != @last_weekday % 7)
         last = last.next
-      end   
+      end
       last
     end
-    
+
     def first_day
       first = @first - 6
       while(first.wday % 7 != (@first_weekday) % 7)
         first = first.next
       end
       first
-    end      
-    
+    end
+
     def objects_for_days(objects, day_method)
       unless @objects_for_days
         @objects_for_days = {}
@@ -108,34 +108,34 @@ module CalendarHelper
       end
       @objects_for_days
     end
-    
+
     def days
       unless @days
         @days = []
-        each_day{|day| @days << day} 
+        each_day{|day| @days << day}
       end
-      @days     
-    end    
-    
+      @days
+    end
+
     def mjdays
       unless @mjdays
         @mdays = []
-        each_day{|day| @days << day} 
+        each_day{|day| @days << day}
       end
-      @days     
-    end    
-    
+      @days
+    end
+
     def first_day_of_week(day)
       day
     end
-    
+
     def last_day_of_week(day)
       if day > 0
         day - 1
       else
         6
       end
-    end    
+    end
   end
 
 end
