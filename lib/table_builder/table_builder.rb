@@ -5,11 +5,10 @@ module TableHelper
     options = args.last.is_a?(Hash) ? args.pop : {}
     html_options = options[:html]
     builder = options[:builder] || TableBuilder
-    
-    concat(tag(:table, html_options, true))
-    yield builder.new(objects || [], self, options)
-    concat('</table>'.html_safe)
-    ""
+
+    content_tag(:table, html_options) do
+      yield builder.new(objects || [], self, options)
+    end
   end
 
   class TableBuilder
@@ -60,7 +59,7 @@ module TableHelper
         @objects.each { |c|
           concat(tag(:tr, options, true))
           yield(c)
-          concat('</tr>')
+          concat('</tr>'.html_safe)
         }
       end
     end    

@@ -49,8 +49,8 @@ module CalendarHelper
       css_classes << 'notmonth' if day.month != @calendar.month
       css_classes << 'weekend'  if day.wday == 0 or day.wday == 6
       css_classes << 'future'   if day > @today.to_date
-      css_classes = day.strftime(id_pattern) if id_pattern
       options[:class] = css_classes.join(' ') unless css_classes.empty?
+      options[:id]    = day.strftime(id_pattern) if id_pattern
       options
     end
 

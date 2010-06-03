@@ -1,9 +1,8 @@
 require File.join(File.dirname(__FILE__), 'test_helper.rb')
 
-class TableBuilderTest < Test::Unit::TestCase
+class TableBuilderTest < ActionView::TestCase
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::TagHelper
-  include ActionController::TestCase::Assertions
   include TableHelper
   attr_accessor :output_buffer  
   
@@ -12,15 +11,14 @@ class TableBuilderTest < Test::Unit::TestCase
     @drummer2 = Drummer.new(2, 'Eric "Stumpy Joe" Childs')
     @drummer3 = Drummer.new(3, 'Peter "James" Bond')
     @drummer4 = Drummer.new(4, 'Mick Shrimpton (R. J. "Ric" Parnell)')
-    self.output_buffer = ''    
   end
   
   def test_table_for
-    table_for([], :html => { :id => 'id', :style => 'style', :class => 'class'}) do |t|
+    output = table_for([], :html => { :id => 'id', :style => 'style', :class => 'class'}) do |t|
     end
     expected = %(<table id="id" style="style" class="class">) <<
       %(</table>)
-    assert_dom_equal expected, output_buffer
+    assert_dom_equal expected, output
   end
 
   def test_table_for_without_an_array_raises_error
@@ -30,7 +28,7 @@ class TableBuilderTest < Test::Unit::TestCase
   end
 
   def test_head
-    table_for([]) do |t|
+    output = table_for([]) do |t|
       t.head do
         t.r do
           output_buffer.concat t.h('Id')
@@ -46,11 +44,11 @@ class TableBuilderTest < Test::Unit::TestCase
           %(</tr>) <<
         %(</thead>) <<
       %(</table>)
-    assert_dom_equal expected, output_buffer
+    assert_dom_equal expected, output
   end
 
   def test_head_r
-    table_for([]) do |t|
+    output = table_for([]) do |t|
       t.head_r do
         output_buffer.concat t.h('Id')
         output_buffer.concat t.h('Name')
@@ -64,12 +62,12 @@ class TableBuilderTest < Test::Unit::TestCase
           %(</tr>) <<
         %(</thead>) <<
       %(</table>)
-    assert_dom_equal expected, output_buffer
+    assert_dom_equal expected, output
   end
 
   def test_head_with_array
-    table_for([@drummer1, @drummer2]) do |t|
-      output_buffer.concat t.head('Id', 'Name')
+    output = table_for([@drummer1, @drummer2]) do |t|
+      concat t.head('Id', 'Name')
     end
     expected = %(<table>) <<
         %(<thead>) <<
@@ -79,15 +77,15 @@ class TableBuilderTest < Test::Unit::TestCase
           %(</tr>) <<
         %(</thead>) <<
       %(</table>)
-    assert_dom_equal expected, output_buffer
+    assert_dom_equal expected, output
   end
 
   def test_body
-    table_for([@drummer3, @drummer4]) do |t|
+    output = table_for([@drummer3, @drummer4]) do |t|
       t.body do |e|
         t.r do
-          output_buffer.concat t.d(e.id)
-          output_buffer.concat t.d(e.name)
+          concat t.d(e.id)
+          concat t.d(e.name)
         end
       end
     end
@@ -95,41 +93,41 @@ class TableBuilderTest < Test::Unit::TestCase
         %(<tbody>) <<
           %(<tr>) <<
             %(<td>3</td>) <<
-            %(<td>Peter "James" Bond</td>) <<
+            %(<td>Peter &quot;James&quot; Bond</td>) <<
           %(</tr>) <<
           %(<tr>) <<
             %(<td>4</td>) <<
-            %(<td>Mick Shrimpton (R. J. "Ric" Parnell)</td>) <<
+            %(<td>Mick Shrimpton (R. J. &quot;Ric&quot; Parnell)</td>) <<
           %(</tr>) <<
         %(</tbody>) <<
       %(</table>)
-    assert_dom_equal expected, output_buffer
+    assert_dom_equal expected, output
   end
 
   def test_body_r
-    table_for([@drummer3, @drummer4]) do |t|
+    output = table_for([@drummer3, @drummer4]) do |t|
       t.body_r do |e|
-        output_buffer.concat t.d(e.id)
-        output_buffer.concat t.d(e.name)
+        concat t.d(e.id)
+        concat t.d(e.name)
       end
     end
     expected = %(<table>) <<
         %(<tbody>) <<
           %(<tr>) <<
             %(<td>3</td>) <<
-            %(<td>Peter "James" Bond</td>) <<
+            %(<td>Peter &quot;James&quot; Bond</td>) <<
           %(</tr>) <<
           %(<tr>) <<
             %(<td>4</td>) <<
-            %(<td>Mick Shrimpton (R. J. "Ric" Parnell)</td>) <<
+            %(<td>Mick Shrimpton (R. J. &quot;Ric&quot; Parnell)</td>) <<
           %(</tr>) <<
         %(</tbody>) <<
       %(</table>)
-    assert_dom_equal expected, output_buffer
+    assert_dom_equal expected, output
   end
   
   def test_td_with_options
-     table_for([@drummer1]) do |t|
+     output = table_for([@drummer1]) do |t|
        t.body_r do |e|
          output_buffer.concat t.d(e.name, :class => 'class')
        end
@@ -137,18 +135,18 @@ class TableBuilderTest < Test::Unit::TestCase
      expected = %(<table>) <<
          %(<tbody>) <<
            %(<tr>) <<
-             %(<td class="class">John "Stumpy" Pepys</td>) <<
+             %(<td class="class">John &quot;Stumpy&quot; Pepys</td>) <<
            %(</tr>) <<
          %(</tbody>) <<
        %(</table>)
-     assert_dom_equal expected, output_buffer
+     assert_dom_equal expected, output
    end  
 
    def test_td_with_block
-      table_for([@drummer1]) do |t|
+      output = table_for([@drummer1]) do |t|
         t.body_r do |e|
           t.d do
-            output_buffer.concat 'content'
+            concat 'content'
           end
         end
       end
@@ -159,14 +157,14 @@ class TableBuilderTest < Test::Unit::TestCase
             %(</tr>) <<
           %(</tbody>) <<
         %(</table>)
-      assert_dom_equal expected, output_buffer
+      assert_dom_equal expected, output
     end
 
    def test_td_with_block_and_options
-      table_for([@drummer1]) do |t|
+      output = table_for([@drummer1]) do |t|
         t.body_r do |e|
           t.d(:class => 'class') do
-            output_buffer.concat 'content'
+            concat 'content'
           end
         end
       end
@@ -177,7 +175,7 @@ class TableBuilderTest < Test::Unit::TestCase
             %(</tr>) <<
           %(</tbody>) <<
         %(</table>)
-      assert_dom_equal expected, output_buffer
+      assert_dom_equal expected, output
     end
 
 end
