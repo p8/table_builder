@@ -58,19 +58,29 @@ module CalendarHelper
 
   class Calendar
     attr_accessor :first_weekday, :last_weekday, :month
+
+    # :first lets you set the first day to start the calendar on (default is the first day of the given :month and :year).
+    #   :first => :today will use Date.today
+    # :last lets you set the last day of the calendar (default is the last day of the given :month and :year).
+    #   :last => :thirty will show 30 days from :first
+    #   :last => :week will show one week
     def initialize(options={})
-      @year = options[:year] || Time.now.year
-      @month = options[:month] || Time.now.month
-      @first_day_of_week = options[:first_day_of_week] || 0
-      @first_weekday = first_day_of_week(@first_day_of_week)
-      @last_weekday = last_day_of_week(@first_day_of_week)
-      if options[:thirty_days_from_now]
-        @first = Date.today
+      @year               = options[:year] || Time.now.year
+      @month              = options[:month] || Time.now.month
+      @first_day_of_week  = options[:first_day_of_week] || 0
+      @first_weekday      = first_day_of_week(@first_day_of_week)
+      @last_weekday       = last_day_of_week(@first_day_of_week)
+
+      @first = options[:first]==:today ? Date.today : options[:first] || Date.civil(@year, @month, 1)
+
+      if options[:last] == :thirty_days || options[:last] == :thirty
         @last = @first + 30
+      elsif options[:last] == :one_week || options[:last] == :week
+        @last = @first
       else
-        @first = Date.civil(@year, @month, 1)
-        @last = Date.civil(@year, @month, -1)
+        @last = options[:last] || Date.civil(@year, @month, -1)
       end
+
     end
 
     def each_day

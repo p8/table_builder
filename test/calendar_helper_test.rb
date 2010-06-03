@@ -79,8 +79,42 @@ class CalendarHelperTest < ActionView::TestCase
         %(</tbody>) <<
       %(</table>)
     assert_dom_equal expected, output
-  end  
-  
+  end
+
+  def test_calendar_for_thirty_days
+    today = Date.civil(2008, 12, 15)
+    output = calendar_for([], :today => today, :year=>2008, :month=>12, :first=>today, :last=>:thirty_days) do |c|
+      c.day do |day, events|
+        concat(events.collect{|e| e.id}.join)
+      end
+    end
+    expected = %(<table>) <<
+      %(<tbody>) <<
+        %(<tr><td class="weekend"></td><td class="today"></td><td class="future"></td><td class="future"></td><td class="future"></td><td class="future"></td><td class="weekend future"></td></tr>) <<
+        %(<tr><td class="weekend future"></td><td class="future"></td><td class="future"></td><td class="future"></td><td class="future"></td><td class="future"></td><td class="weekend future"></td></tr>) <<
+        %(<tr><td class="weekend future"></td><td class="future"></td><td class="future"></td><td class="future"></td><td class="notmonth future"></td><td class="notmonth future"></td><td class="notmonth weekend future"></td></tr>) <<
+        %(<tr><td class="notmonth weekend future"></td><td class="notmonth future"></td><td class="notmonth future"></td><td class="notmonth future"></td><td class="notmonth future"></td><td class="notmonth future"></td><td class="notmonth weekend future"></td></tr>) <<
+        %(<tr><td class="notmonth weekend future"></td><td class="notmonth future"></td><td class="notmonth future"></td><td class="notmonth future"></td><td class="notmonth future"></td><td class="notmonth future"></td><td class="notmonth weekend future"></td></tr>) <<
+        %(</tbody>) <<
+      %(</table>)
+    assert_dom_equal expected, output
+  end
+
+  def test_calendar_for_week
+    today = Date.civil(2008, 12, 15)
+    output = calendar_for([], :today => today, :year=>2008, :month=>12, :first=>today, :last=>:week) do |c|
+      c.day do |day, events|
+        concat(events.collect{|e| e.id}.join)
+      end
+    end
+    expected = %(<table>) <<
+      %(<tbody>) <<
+        %(<tr><td class="weekend"></td><td class="today"></td><td class="future"></td><td class="future"></td><td class="future"></td><td class="future"></td><td class="weekend future"></td></tr>) <<
+        %(</tbody>) <<
+      %(</table>)
+    assert_dom_equal expected, output
+  end
+
   def test_calendar_for_sets_css_ids
     output = calendar_for([], :year=> 2008, :month => 12, :today => Date.civil(2008, 12, 15)) do |c|
       c.day(:id => 'day_%d') do |day, events|
