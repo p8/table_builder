@@ -113,14 +113,7 @@ If you want to add id's to your td tag you can pass a pattern:
 
 == Install
 
-script/plugin install git://github.com/p8/table_builder.git
-
-If you get the following error:
-   ActionView::TemplateError (wrong number of arguments (1 for 2))
-
-You can try an older pre rails 2.2 table_builder:
-  cd vendor/plugins/table_builder/
-  git checkout pre-rails-2.2
+$ [sudo] gem install table_builder
   
 == Contributors
 
