@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{table_builder}
-  s.version = "0.0.0"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Petrik de Heus"]
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".autotest",
+     ".gitignore",
      "MIT-LICENSE",
      "README.rdoc",
      "Rakefile",
@@ -25,6 +26,7 @@ Gem::Specification.new do |s|
      "lib/table_builder.rb",
      "lib/table_builder/calendar_helper.rb",
      "lib/table_builder/table_builder.rb",
+     "table_builder.gemspec",
      "test/calendar_helper_test.rb",
      "test/table_builder_test.rb",
      "test/test_helper.rb"
