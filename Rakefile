@@ -20,3 +20,20 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gem|
+    gem.name        = "table_builder"
+    gem.summary     = %Q{Rails builder for creating tables and calendars inspired by ActionView's FormBuilder.}
+    gem.description = %Q{Rails builder for creating tables and calendars inspired by ActionView's FormBuilder.}
+    gem.email       = ""
+    gem.homepage    = "http://github.com/maca/table_builder"
+    gem.authors     = ["Petrik de Heus"]
+    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+  end
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+end
