@@ -124,6 +124,6 @@ You can try an older pre rails 2.2 table_builder:
   
 == Contributors
 
-Thanks to Sean Dague.
+Thanks to Sean Dague, F. Kocherga, John Duff.
 
 Copyright (c) 2008 Petrik de Heus, released under the MIT license
