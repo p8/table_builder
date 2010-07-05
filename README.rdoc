@@ -113,7 +113,7 @@ If you want to add id's to your td tag you can pass a pattern:
 
 == Install
 
-gem install table_builder
+script/plugin install git://github.com/p8/table_builder.git
 
 For a pre rails 3.0 table_builder:
   script/plugin install git://github.com/p8/table_builder.git
