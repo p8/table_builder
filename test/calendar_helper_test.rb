@@ -81,6 +81,25 @@ class CalendarHelperTest < ActionView::TestCase
     assert_dom_equal expected, output
   end
 
+  def test_calendar_for_sets_custom_css_classes
+    custom_css = lambda { |day| day.day.even? ? "even" : "odd" }
+    output = calendar_for([], :year=> 2008, :month => 12, :today => Date.civil(2008, 12, 15)) do |c|
+      c.day(:class => custom_css) do |day, events|
+        concat(events.collect{|e| e.id}.join)
+      end
+    end
+    expected = %(<table>) <<
+      %(<tbody>) <<
+        %(<tr><td class="notmonth weekend even"></td><td class="odd"></td><td class="even"></td><td class="odd"></td><td class="even"></td><td class="odd"></td><td class="weekend even"></td></tr>) <<
+        %(<tr><td class="weekend odd"></td><td class="even"></td><td class="odd"></td><td class="even"></td><td class="odd"></td><td class="even"></td><td class="weekend odd"></td></tr>) <<
+        %(<tr><td class="weekend even"></td><td class="today odd"></td><td class="future even"></td><td class="future odd"></td><td class="future even"></td><td class="future odd"></td><td class="weekend future even"></td></tr>) <<
+        %(<tr><td class="weekend future odd"></td><td class="future even"></td><td class="future odd"></td><td class="future even"></td><td class="future odd"></td><td class="future even"></td><td class="weekend future odd"></td></tr>) <<
+        %(<tr><td class="weekend future even"></td><td class="future odd"></td><td class="future even"></td><td class="future odd"></td><td class="notmonth future odd"></td><td class="notmonth future even"></td><td class="notmonth weekend future odd"></td></tr>) <<
+        %(</tbody>) <<
+      %(</table>)
+    assert_dom_equal expected, output
+  end
+
   def test_calendar_for_thirty_days
     today = Date.civil(2008, 12, 15)
     output = calendar_for([], :today => today, :year=>2008, :month=>12, :first=>today, :last=>:thirty_days) do |c|
