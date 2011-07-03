@@ -23,12 +23,13 @@ module CalendarHelper
       options = options_from_hash(args)
       day_method = options.delete(:day_method) || :date
       id_pattern = options.delete(:id)
+      css_lambda = options.delete(:class)
       tbody do
         @calendar.objects_for_days(@objects, day_method).to_a.sort{|a1, a2| a1.first <=> a2.first }.each do |o|
           key, array = o
           day, objects = array
           concat(tag(:tr, options, true)) if(day.wday ==  @calendar.first_weekday)
-          concat(tag(:td, td_options(day, id_pattern), true))
+          concat(tag(:td, td_options(day, id_pattern, css_lambda), true))
           yield(day, objects)
           concat('</td>')
           concat('</tr>') if(day.wday ==  @calendar.last_weekday)
@@ -42,13 +43,14 @@ module CalendarHelper
       @calendar.objects_for_days(@objects)
     end
 
-    def td_options(day, id_pattern)
+    def td_options(day, id_pattern, css_lambda)
       options = {}
       css_classes = []
-      css_classes << 'today'    if day.strftime("%Y-%m-%d") ==  @today.strftime("%Y-%m-%d")
-      css_classes << 'notmonth' if day.month != @calendar.month
-      css_classes << 'weekend'  if day.wday == 0 or day.wday == 6
-      css_classes << 'future'   if day > @today.to_date
+      css_classes << 'today'              if day.strftime("%Y-%m-%d") ==  @today.strftime("%Y-%m-%d")
+      css_classes << 'notmonth'           if day.month != @calendar.month
+      css_classes << 'weekend'            if day.wday == 0 or day.wday == 6
+      css_classes << 'future'             if day > @today.to_date
+      css_classes << css_lambda.call(day) if !css_lambda.nil?
       options[:class] = css_classes.join(' ') unless css_classes.empty?
       options[:id]    = day.strftime(id_pattern) if id_pattern
       options
